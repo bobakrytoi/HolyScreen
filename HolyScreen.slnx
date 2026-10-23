@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/HolyScreen/HolyScreen.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/HolyScreen.Tests/HolyScreen.Tests.csproj" />
+    <Project Path="tests/HolyScreen.E2E/HolyScreen.E2E.csproj" />
+  </Folder>
+</Solution>

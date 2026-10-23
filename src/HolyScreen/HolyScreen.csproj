@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.17763.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>HolyScreen</RootNamespace>
+    <AssemblyName>HolyScreen</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
+
+    <Product>HolyScreen</Product>
+    <AssemblyTitle>HolyScreen</AssemblyTitle>
+    <Description>Tray screenshot tool for Windows: region capture, annotations, copy, save, pin and OCR.</Description>
+    <Company>HolyScreen</Company>
+    <Copyright>Copyright © 2026</Copyright>
+    <Version>0.1.0</Version>
+
+    <!-- Windows 10 1809 is the oldest build whose APIs we rely on (PMv2 DPI awareness, Windows.Media.Ocr). -->
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <TieredPGO>true</TieredPGO>
+    <Deterministic>true</Deterministic>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="HolyScreen.Tests" />
+    <InternalsVisibleTo Include="HolyScreen.E2E" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\AppIcon.ico" />
+  </ItemGroup>
+
+</Project>

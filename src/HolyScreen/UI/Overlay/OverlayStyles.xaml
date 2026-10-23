@@ -1,0 +1,202 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Panel buttons on the capture overlay: 36×36 hit targets, icon only, hover wash, springy press. -->
+    <SolidColorBrush x:Key="PanelIconBrush" Color="#E9ECF1" />
+    <SolidColorBrush x:Key="PanelIconActiveBrush" Color="#A9D2FF" />
+    <SolidColorBrush x:Key="PanelHoverBrush" Color="#FFFFFF" Opacity="0.10" />
+    <SolidColorBrush x:Key="PanelPressedBrush" Color="#FFFFFF" Opacity="0.17" />
+    <SolidColorBrush x:Key="PanelActiveBrush" Color="#5AA9FF" Opacity="0.26" />
+    <SolidColorBrush x:Key="PanelActiveStrokeBrush" Color="#5AA9FF" Opacity="0.55" />
+    <SolidColorBrush x:Key="PanelSeparatorBrush" Color="#FFFFFF" Opacity="0.12" />
+
+    <ControlTemplate x:Key="PanelButtonTemplate" TargetType="ButtonBase">
+        <Grid x:Name="Root" Background="Transparent" RenderTransformOrigin="0.5,0.5">
+            <Grid.RenderTransform>
+                <ScaleTransform x:Name="Scale" />
+            </Grid.RenderTransform>
+            <Border x:Name="Active" CornerRadius="10" Background="{StaticResource PanelActiveBrush}"
+                    BorderBrush="{StaticResource PanelActiveStrokeBrush}" BorderThickness="1" Opacity="0" />
+            <Border x:Name="Wash" CornerRadius="10" Background="{StaticResource PanelHoverBrush}" Opacity="0" />
+            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="Wash" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.12" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="Wash" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.2" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="Wash" Property="Background" Value="{StaticResource PanelPressedBrush}" />
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="Scale" Storyboard.TargetProperty="ScaleX" To="0.88" Duration="0:0:0.08" />
+                            <DoubleAnimation Storyboard.TargetName="Scale" Storyboard.TargetProperty="ScaleY" To="0.88" Duration="0:0:0.08" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="Scale" Storyboard.TargetProperty="ScaleX" To="1" Duration="0:0:0.32">
+                                <DoubleAnimation.EasingFunction>
+                                    <ElasticEase Oscillations="1" Springiness="5" EasingMode="EaseOut" />
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <DoubleAnimation Storyboard.TargetName="Scale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.32">
+                                <DoubleAnimation.EasingFunction>
+                                    <ElasticEase Oscillations="1" Springiness="5" EasingMode="EaseOut" />
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="Root" Property="Opacity" Value="0.32" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="PanelButton" TargetType="Button">
+        <Setter Property="Width" Value="36" />
+        <Setter Property="Height" Value="36" />
+        <Setter Property="Margin" Value="1" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Foreground" Value="{StaticResource PanelIconBrush}" />
+        <Setter Property="ToolTipService.InitialShowDelay" Value="450" />
+        <Setter Property="ToolTipService.Placement" Value="Top" />
+        <Setter Property="Template" Value="{StaticResource PanelButtonTemplate}" />
+    </Style>
+
+    <!-- In-place text entry for the Text tool: no chrome but a faint dashed frame showing the edit area. -->
+    <Style x:Key="OverlayTextBox" TargetType="TextBox">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="AcceptsReturn" Value="True" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="MinWidth" Value="24" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Grid>
+                        <Rectangle Stroke="#B3FFFFFF" StrokeThickness="1" StrokeDashArray="3 2" RadiusX="3" RadiusY="3"
+                                   Margin="-3,-2,-3,-2" SnapsToDevicePixels="True" />
+                        <Rectangle Stroke="#66000000" StrokeThickness="1" StrokeDashArray="3 2" StrokeDashOffset="3"
+                                   RadiusX="3" RadiusY="3" Margin="-3,-2,-3,-2" SnapsToDevicePixels="True" />
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="False"
+                                      HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="PanelToggle" TargetType="ToggleButton">
+        <Setter Property="Width" Value="36" />
+        <Setter Property="Height" Value="36" />
+        <Setter Property="Margin" Value="1" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Foreground" Value="{StaticResource PanelIconBrush}" />
+        <Setter Property="ToolTipService.InitialShowDelay" Value="450" />
+        <Setter Property="ToolTipService.Placement" Value="Left" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Grid x:Name="Root" Background="Transparent" RenderTransformOrigin="0.5,0.5">
+                        <Grid.RenderTransform>
+                            <ScaleTransform x:Name="Scale" />
+                        </Grid.RenderTransform>
+                        <Border x:Name="Active" CornerRadius="10" Background="{StaticResource PanelActiveBrush}"
+                                BorderBrush="{StaticResource PanelActiveStrokeBrush}" BorderThickness="1" Opacity="0" />
+                        <Border x:Name="Wash" CornerRadius="10" Background="{StaticResource PanelHoverBrush}" Opacity="0" />
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Foreground" Value="{StaticResource PanelIconActiveBrush}" />
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Active" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.15" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Active" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Wash" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.12" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Wash" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Wash" Property="Background" Value="{StaticResource PanelPressedBrush}" />
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Scale" Storyboard.TargetProperty="ScaleX" To="0.88" Duration="0:0:0.08" />
+                                        <DoubleAnimation Storyboard.TargetName="Scale" Storyboard.TargetProperty="ScaleY" To="0.88" Duration="0:0:0.08" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Scale" Storyboard.TargetProperty="ScaleX" To="1" Duration="0:0:0.32">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ElasticEase Oscillations="1" Springiness="5" EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation Storyboard.TargetName="Scale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.32">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ElasticEase Oscillations="1" Springiness="5" EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Root" Property="Opacity" Value="0.32" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

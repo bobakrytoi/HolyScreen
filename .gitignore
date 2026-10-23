@@ -1,0 +1,36 @@
+# Build output
+bin/
+obj/
+dist/
+publish/
+*.user
+*.binlog
+
+# Local tooling (icon generator etc.) — the generated AppIcon.ico is committed, the tools are not
+tools/
+
+# Temp / scratch files
+temp/
+tmp/
+*.tmp
+*.bak
+*.damaged-*
+
+# Test artifacts (E2E screenshots, results, coverage)
+TestResults/
+artifacts/
+coverage/
+
+# Logs
+*.log
+
+# Editors / IDEs / local assistant settings
+.vs/
+.vscode/
+.idea/
+*.suo
+.claude/
+
+# OS
+Thumbs.db
+desktop.ini
